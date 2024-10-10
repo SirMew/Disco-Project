@@ -1,9 +1,9 @@
-//#include "FastLED.h"
-//#include "discoNeon.h"
+#include "FastLED.h"
+#include "discoNeon.h"
 
 /* number if LEDS in a WS2811 strip = 10 
   number of Strips in build = 4 */
- /*
+ 
 #define NUM_LEDS 40 
 #define DATA_PIN 5
 
@@ -207,4 +207,3 @@ for(int i=30;i<NUM_LEDS;i++){
     FastLED.show();
     delay(1000);
 }
-*/

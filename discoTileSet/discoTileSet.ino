@@ -20,7 +20,7 @@ volatile byte buttonUpReleased = false;
 volatile byte buttonDownReleased = false;
 int mode = 1;
 
-//Mode button functions
+//Mode button function ISRs (Interupt Sevice Routine)
 void buttonUpReleasedInterrupt(){
   buttonUpReleased = true;
 }
