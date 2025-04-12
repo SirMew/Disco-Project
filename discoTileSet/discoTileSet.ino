@@ -18,7 +18,7 @@ void startTest(int ledNum, int tileNum);
 
 volatile byte buttonUpReleased = false;
 volatile byte buttonDownReleased = false;
-int mode = 1;
+int mode = 6;
 
 //Mode button functions
 void buttonUpReleasedInterrupt(){
@@ -55,7 +55,7 @@ void loop() {
 
   if (buttonUpReleased){
     buttonUpReleased = false;
-    if(mode < 5){ //check that mode is within define int range and increase
+    if(mode < 6){ //check that mode is within define int range and increase
       mode++;
     }
     else { //else loop mode back to 1
@@ -69,7 +69,7 @@ void loop() {
       mode--;
     }
     else { //else loop mode back to 5
-      mode=5;
+      mode=6;
     }
   }
 
@@ -89,6 +89,9 @@ void loop() {
     darksynth(NUM_LEDS, NUM_TILES);
   }
   else if(mode == 5){
+    discoHalf(NUM_LEDS, NUM_TILES);
+  }
+  else if(mode == 6){
     discoHalf(NUM_LEDS, NUM_TILES);
   }
   else{
