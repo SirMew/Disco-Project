@@ -20,7 +20,7 @@ volatile byte buttonUpReleased = false;
 volatile byte buttonDownReleased = false;
 int mode = 1;
 
-//Mode button function ISRs (Interupt Sevice Routine)
+//Mode button functions
 void buttonUpReleasedInterrupt(){
   buttonUpReleased = true;
 }
@@ -55,7 +55,7 @@ void loop() {
 
   if (buttonUpReleased){
     buttonUpReleased = false;
-    if(mode < 4){ //check that mode is within define int range and increase
+    if(mode < 5){ //check that mode is within define int range and increase
       mode++;
     }
     else { //else loop mode back to 1
@@ -68,8 +68,8 @@ void loop() {
     if(mode > 0){ //check that mode is within define int range and reduce
       mode--;
     }
-    else { //else loop mode back to 4
-      mode=4;
+    else { //else loop mode back to 5
+      mode=5;
     }
   }
 
@@ -87,6 +87,9 @@ void loop() {
   }
   else if(mode == 4){
     darksynth(NUM_LEDS, NUM_TILES);
+  }
+  else if(mode == 5){
+    discoHalf(NUM_LEDS, NUM_TILES);
   }
   else{
     discoNeon(NUM_LEDS, NUM_TILES);
