@@ -3,12 +3,16 @@ void discoHalf(int ledNum, int tileNum){
 int colours[] = {1,2,3,4,5,6,7,8,9,10};
 int randomIndex;
 int colourVal;
-//Loop through tiles
+
+//Loop through tiles and assumes there are twice as many to split each in half
 
 for(int j=1;j<=tileNum*2;j++){
   randomIndex = rand()%10;
   colourVal = colours[randomIndex];
-  for(int i=10/2*j-10/2;i<10/2*j;i++){
+  //loop through Leds in each half tile, setting half of the led strip to a single colour
+  // ledNum needs to be halved as only half a strip makes up half a tile.
+  
+  for(int i=ledNum/2*j-ledNum/2;i<ledNum/2*j;i++){
       if (colourVal == 1){
         leds[i] = 0xB51D05;//orange
       }

@@ -1,9 +1,9 @@
 #include "FastLED.h"
 
-/* number if LEDS in a WS2811 strip = 10 
+/* number of LEDS in a WS2811 strip = 10 
   number of Strips in build = 4 */
  
-#define NUM_LEDS 40 
+#define NUM_LEDS 10 // per LED strip
 #define DATA_PIN 5
 #define NUM_TILES 4
 #define MODE_UP 2
@@ -14,11 +14,12 @@ void discoNeon(int ledNum, int tileNum);
 void synthwave(int ledNum, int tileNum);
 void electroswing(int ledNum, int tileNum);
 void darksynth(int ledNum, int tileNum);
+void stripTest(int ledNum, int tileNum);
 void startTest(int ledNum, int tileNum);
 
 volatile byte buttonUpReleased = false;
 volatile byte buttonDownReleased = false;
-int mode = 6;
+int mode = 1;
 
 //Mode button functions
 void buttonUpReleasedInterrupt(){
@@ -47,12 +48,12 @@ void setup() {
 
   // start test - loop through red, green, blue
   startTest(NUM_LEDS, NUM_TILES);
-    
-
 }
  
+
 void loop() {
 
+// checks for button interrupts and increments or decrements mode value
   if (buttonUpReleased){
     buttonUpReleased = false;
     if(mode < 6){ //check that mode is within define int range and increase
@@ -92,7 +93,7 @@ void loop() {
     discoHalf(NUM_LEDS, NUM_TILES);
   }
   else if(mode == 6){
-    discoHalf(NUM_LEDS, NUM_TILES);
+    stripTest(NUM_LEDS, NUM_TILES);
   }
   else{
     discoNeon(NUM_LEDS, NUM_TILES);

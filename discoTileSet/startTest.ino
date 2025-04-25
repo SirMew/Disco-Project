@@ -3,10 +3,12 @@ int colourVal =0;
 //Loop through RGB
 for(int t=0;t<3;t++){
   colourVal=colourVal+1;
+  
   //Loop through tiles
   for(int j=1;j<=tileNum;j++){
     
-    for(int i=10*j-10;i<10*j;i++){
+    //loop through Leds in tile, setting all to a single a single colour
+    for(int i=ledNum*j-ledNum;i<ledNum*j;i++){
     
         if (colourVal == 1){
           leds[i] = 0xFF0000; //red

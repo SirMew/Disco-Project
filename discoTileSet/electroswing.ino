@@ -8,7 +8,9 @@ int colourVal;
 for(int j=1;j<=tileNum;j++){
   randomIndex = rand()%10;
   colourVal = colours[randomIndex];
-  for(int i=10*j-10;i<10*j;i++){
+
+  //loop through Leds in tile, setting all to a single a single colour
+  for(int i=ledNum*j-ledNum;i<ledNum*j;i++){
       if (colourVal == 1){
         leds[i] = 0xC7BB85;//light yellow
       }
