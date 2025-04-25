@@ -73,32 +73,30 @@ void loop() {
       mode=6;
     }
   }
-
   
-
   //mode check to determine tile mode function call
-  if (mode == 1){
-    discoNeon(NUM_LEDS, NUM_TILES);
+  switch(mode) {
+    case 1:
+      discoNeon(NUM_LEDS, NUM_TILES);
+      break;
+    case 2:
+      synthwave(NUM_LEDS, NUM_TILES);
+      break;
+    case 3:
+      electroswing(NUM_LEDS, NUM_TILES);
+      break;
+    case 4:
+      darksynth(NUM_LEDS, NUM_TILES);
+      break;
+    case 5:
+      discoHalf(NUM_LEDS, NUM_TILES);
+      break;
+    case 6:
+      stripTest(NUM_LEDS, NUM_TILES);
+      break;
+    default:
+      discoNeon(NUM_LEDS, NUM_TILES);
+      break;
   }
-  else if(mode == 2){
-    synthwave(NUM_LEDS, NUM_TILES);
-  }
-  else if(mode == 3){
-    electroswing(NUM_LEDS, NUM_TILES);
-  }
-  else if(mode == 4){
-    darksynth(NUM_LEDS, NUM_TILES);
-  }
-  else if(mode == 5){
-    discoHalf(NUM_LEDS, NUM_TILES);
-  }
-  else if(mode == 6){
-    stripTest(NUM_LEDS, NUM_TILES);
-  }
-  else{
-    discoNeon(NUM_LEDS, NUM_TILES);
-    }
-
-  
   //delay(500);
 }
