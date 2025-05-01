@@ -8,6 +8,8 @@
 #define NUM_TILES 4
 #define MODE_UP 2
 #define MODE_DOWN 3
+#define COLOUR_ORDER BRG
+#define LED_TYPE WS2811
 
 //Function prototypes
 void discoNeon(int ledNum, int tileNum);
@@ -29,7 +31,8 @@ void buttonDownReleasedInterrupt(){
   buttonDownReleased = true;
 }
  
-CRGB leds[NUM_LEDS];
+//CRGB leds[NUM_TILES][NUM_LEDS]; // struct array CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP] if using strips on different pins to set up multiarrays
+CRGB leds[NUM_TILES*NUM_LEDS]; //struct array CRGB combining all hardware strips into one big strip for data output
 
 void setup() {
 
@@ -43,7 +46,7 @@ void setup() {
 
   // sanity check delay - allows reprogramming if accidently blowing power w/leds
   delay(1000);
-  FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);//.setCorrection(ClearBlueSky);
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOUR_ORDER>(leds, NUM_LEDS*NUM_TILES);//.setCorrection(ClearBlueSky);
   //FastLED.setBrightness(CRGB(255,255,255));
 
   // start test - loop through red, green, blue

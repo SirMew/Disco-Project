@@ -3,8 +3,8 @@ void darksynth(int ledNum, int tileNum){
 int colours[] = {1,2,3,4,5,6,7};
 int randomIndex;
 int colourVal;
-//Loop through tiles
 
+//Loop through tiles
 for(int j=1;j<=tileNum;j++){
   randomIndex = rand()%7;
   colourVal = colours[randomIndex];
