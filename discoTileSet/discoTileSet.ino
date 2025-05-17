@@ -10,6 +10,7 @@
 #define MODE_DOWN 3
 #define COLOUR_ORDER BRG
 #define LED_TYPE WS2811
+#define heart_beat_pin   LED_BUILTIN  // digital pin for heart beat LED 
 
 //Function prototypes
 void discoNeon(int ledNum, int tileNum);
@@ -18,10 +19,16 @@ void electroswing(int ledNum, int tileNum);
 void darksynth(int ledNum, int tileNum);
 void stripTest(int ledNum, int tileNum);
 void startTest(int ledNum, int tileNum);
+void heart_beat();
 
 volatile byte buttonUpReleased = false;
 volatile byte buttonDownReleased = false;
 int mode = 1;
+long unsigned heart_beat_freq = 10; // time(milliseconds) of heart beat frequency 
+long unsigned heart_beat_on_off_time; // the time the LED is on and off - 1/2 frequency 
+long unsigned last_heart_beat_time;   // time in milliseconds of last heart beat status change 
+bool heart_beat_status = HIGH;        // current status of heart beat, start high 
+
 
 //Mode button functions
 void buttonUpReleasedInterrupt(){
@@ -30,11 +37,15 @@ void buttonUpReleasedInterrupt(){
 void buttonDownReleasedInterrupt(){
   buttonDownReleased = true;
 }
- 
+
 //CRGB leds[NUM_TILES][NUM_LEDS]; // struct array CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP] if using strips on different pins to set up multiarrays
 CRGB leds[NUM_TILES*NUM_LEDS]; //struct array CRGB combining all hardware strips into one big strip for data output
 
 void setup() {
+
+  // initialise builtin LED for heartbeat status
+  pinMode(LED_BUILTIN, OUTPUT); 
+  heart_beat_on_off_time = heart_beat_freq / 2; // LED is on and off at 1/2 frequency time 
 
   //add pin 2 interrupt 
   pinMode(MODE_UP, INPUT);
@@ -55,6 +66,9 @@ void setup() {
  
 
 void loop() {
+
+//heartbeat function
+  heart_beat();
 
 // checks for button interrupts and increments or decrements mode value
   if (buttonUpReleased){
