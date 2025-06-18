@@ -21,10 +21,10 @@ for(int j=1;j<=tileNum;j++){
           leds[i] = 0xFFFF27; //yellow
           break;
         case 3:
-          leds[i] = 0xFFDC40;//cyan
+          leds[i] = 0xFFDC40;//yellow
           break;
         case 4:
-          leds[i] = 0x73FF37; //cyan
+          leds[i] = 0x73FF37; //green
           break;
         case 5:
           leds[i] = 0x1D808B; //blue
