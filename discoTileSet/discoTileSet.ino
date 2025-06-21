@@ -3,9 +3,9 @@
 /* number of LEDS in a WS2811 strip = 10 
   number of Strips in build = 4 */
  
-#define NUM_LEDS 10 // per LED strip
+#define NUM_LEDS 5 // per LED strip
 #define DATA_PIN 5
-#define NUM_TILES 4
+#define NUM_TILES 9
 #define MODE_UP 2
 #define MODE_DOWN 3
 #define COLOUR_ORDER BRG
@@ -18,7 +18,7 @@ void synthwave(int ledNum, int tileNum);
 void electroswing(int ledNum, int tileNum);
 void darksynth(int ledNum, int tileNum);
 void stripTest(int ledNum, int tileNum);
-void startTest(int ledNum, int tileNum);
+void startupRGB(int ledNum, int tileNum);
 void heart_beat();
 
 volatile byte g_buttonUpReleased = false;
@@ -55,7 +55,7 @@ void setup() {
   //FastLED.setBrightness(CRGB(255,255,255));
 
   // start test - loop through red, green, blue
-  startTest(NUM_LEDS, NUM_TILES);
+  startupRGB(NUM_LEDS, NUM_TILES);
 }
  
 
