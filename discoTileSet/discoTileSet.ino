@@ -1,8 +1,8 @@
-#include "FastLED.h"
+#include <FastLED.h>
+#include <arduino-timer>
 
 /* number of LEDS in a WS2811 strip = 10 
   number of Strips in build = 4 */
- 
 #define NUM_LEDS 5 // per LED strip
 #define DATA_PIN 5
 #define NUM_TILES 9
@@ -25,15 +25,22 @@ volatile byte g_buttonUpReleased = false;
 volatile byte g_buttonDownReleased = false;
 int g_mode = 1;
 
-//Mode button functions
+// timer creation
+auto timer_create_default();
+
+//Interrupt Service Routines
 void buttonUpReleasedInterrupt(){
   g_buttonUpReleased = true;
 }
 void buttonDownReleasedInterrupt(){
   g_buttonDownReleased = true;
 }
+volatile bool heartbeat(void *){
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // toggle the LED
+  return true; // repeat? true
+}
 
-//CRGB leds[NUM_TILES][NUM_LEDS]; // struct array CRGB leds[NUM_STRIPS][NUM_LEDS_PER_STRIP] if using strips on different pins to set up multiarrays
+//setup LED object
 CRGB leds[NUM_TILES*NUM_LEDS]; //struct array CRGB combining all hardware strips into one big strip for data output
 
 void setup() {
@@ -49,21 +56,18 @@ void setup() {
   pinMode(MODE_DOWN, INPUT);
   attachInterrupt(digitalPinToInterrupt(MODE_DOWN), buttonDownReleasedInterrupt, FALLING);
 
+  //schedule heartbeat timer to run every 1000ms
+  timer.every(1000, heartbeat);
+
   // sanity check delay - allows reprogramming if accidently blowing power w/leds
   delay(1000);
-  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOUR_ORDER>(leds, NUM_LEDS*NUM_TILES);//.setCorrection(ClearBlueSky);
-  //FastLED.setBrightness(CRGB(255,255,255));
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOUR_ORDER>(leds, NUM_LEDS*NUM_TILES);
 
   // start test - loop through red, green, blue
   startupRGB(NUM_LEDS, NUM_TILES);
 }
  
-
 void loop() {
-
-//heartbeat function
-  heartbeat();
-
 // checks for button interrupts and increments or decrements mode value
   if (g_buttonUpReleased){
     g_buttonUpReleased = false;
@@ -74,7 +78,6 @@ void loop() {
       g_mode=1;
     }
   }
-
   if (g_buttonDownReleased){
     g_buttonDownReleased = false;
     if(g_mode > 0){ //check that mode is within define int range and reduce
@@ -84,7 +87,6 @@ void loop() {
       g_mode=6;
     }
   }
-  
   //mode check to determine tile mode function call
   switch(g_mode) {
     case 1:
@@ -109,5 +111,5 @@ void loop() {
       discoNeon(NUM_LEDS, NUM_TILES);
       break;
   }
-  //delay(500);
+  timer.tick();
 }
