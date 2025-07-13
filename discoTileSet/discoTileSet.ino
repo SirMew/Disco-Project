@@ -1,5 +1,5 @@
 #include <FastLED.h>
-#include <arduino-timer>
+#include <arduino-timer.h>
 
 /* number of LEDS in a WS2811 strip = 10 
   number of Strips in build = 4 */
@@ -19,14 +19,15 @@ void electroswing(int ledNum, int tileNum);
 void darksynth(int ledNum, int tileNum);
 void stripTest(int ledNum, int tileNum);
 void startupRGB(int ledNum, int tileNum);
-void heart_beat();
 
 volatile byte g_buttonUpReleased = false;
 volatile byte g_buttonDownReleased = false;
 int g_mode = 1;
+unsigned long g_interval= 900; 
 
 // timer creation
-auto timer_create_default();
+//auto timer_create_default();
+Timer<1> timer;
 
 //Interrupt Service Routines
 void buttonUpReleasedInterrupt(){
@@ -40,6 +41,61 @@ volatile bool heartbeat(void *){
   return true; // repeat? true
 }
 
+bool changeColourCallback(void *){
+  //mode check to determine tile mode function call
+  switch(g_mode) {
+    case 1:
+      discoNeon(NUM_LEDS, NUM_TILES);
+      break;
+    case 2:
+      synthwave(NUM_LEDS, NUM_TILES);
+      break;
+    case 3:
+      electroswing(NUM_LEDS, NUM_TILES);
+      break;
+    case 4:
+      darksynth(NUM_LEDS, NUM_TILES);
+      break;
+    case 5:
+      discoHalf(NUM_LEDS, NUM_TILES);
+      break;
+    case 6:
+      stripTest(NUM_LEDS, NUM_TILES);
+      break;
+    default:
+      discoNeon(NUM_LEDS, NUM_TILES);
+      break;
+  }
+  return true; //repeat this task
+}
+
+void updateInterval(){
+    switch(g_mode) {
+    case 1:
+      g_interval = 900;
+      break;
+    case 2:
+      g_interval = 1300;
+      break;
+    case 3:
+      g_interval = 500;
+      break;
+    case 4:
+      g_interval = 1200;
+      break;
+    case 5:
+      g_interval = 900;
+      break;
+    case 6:
+      g_interval = 100;
+      break;
+    default:
+      g_interval = 900;
+      break;
+  }
+  timer.cancel();
+  timer.every(g_interval, changeColourCallback);
+}
 //setup LED object
 CRGB leds[NUM_TILES*NUM_LEDS]; //struct array CRGB combining all hardware strips into one big strip for data output
 
@@ -57,7 +113,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(MODE_DOWN), buttonDownReleasedInterrupt, FALLING);
 
   //schedule heartbeat timer to run every 1000ms
-  timer.every(1000, heartbeat);
+  //timer.every(1000, heartbeat);
+  updateInterval(); //initialise with default mode
 
   // sanity check delay - allows reprogramming if accidently blowing power w/leds
   delay(1000);
@@ -87,29 +144,6 @@ void loop() {
       g_mode=6;
     }
   }
-  //mode check to determine tile mode function call
-  switch(g_mode) {
-    case 1:
-      discoNeon(NUM_LEDS, NUM_TILES);
-      break;
-    case 2:
-      synthwave(NUM_LEDS, NUM_TILES);
-      break;
-    case 3:
-      electroswing(NUM_LEDS, NUM_TILES);
-      break;
-    case 4:
-      darksynth(NUM_LEDS, NUM_TILES);
-      break;
-    case 5:
-      discoHalf(NUM_LEDS, NUM_TILES);
-      break;
-    case 6:
-      stripTest(NUM_LEDS, NUM_TILES);
-      break;
-    default:
-      discoNeon(NUM_LEDS, NUM_TILES);
-      break;
-  }
+
   timer.tick();
 }

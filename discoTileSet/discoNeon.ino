@@ -93,7 +93,6 @@ for(int j=1;j<=tileNum;j++){
     FastLED.setBrightness(200);
     FastLED.show();
   }
-  delay(900);
 }
 
   

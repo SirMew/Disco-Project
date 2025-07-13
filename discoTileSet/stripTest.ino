@@ -8,6 +8,5 @@ void stripTest(int ledNum, int tileNum){
     FastLED.show();
     leds[i] = CRGB::Black; // clear this LED for next time around in loop
     FastLED.show();
-    delay(100);
   }
 }

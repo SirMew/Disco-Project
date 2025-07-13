@@ -31,5 +31,4 @@ for(int j=1;j<=tileNum;j++){
     FastLED.setCorrection(TypicalSMD5050);
     FastLED.show();
   }
-  delay(500);
 }
